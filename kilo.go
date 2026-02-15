@@ -30,7 +30,9 @@ func main() {
 		// if the user types CTRL+Q it quits.
 		// 17 because in ASCII Q + 81 and CTRL removes 64 so 81-64 = 17
 
-		if buf[0] == 17 {
+		const ctrlq = 17
+
+		if buf[0] == ctrlq {
 			break
 		}
 		// writing back to screen each key stroke of the user
