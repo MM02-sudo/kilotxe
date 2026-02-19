@@ -20,10 +20,20 @@ func main() {
 	oldTerminalState := enableRawMode()
 	defer term.Restore(int(os.Stdin.Fd()), oldTerminalState)
 
+	// sending instruction to terminal to clear the entire screen
+	os.Stdout.WriteString("\x1b[2J")
+	os.Stdout.WriteString("\x1b[H")
+
+	// useful commands for late
+	// \x1b[2J     → Clear entire screen
+	//\x1b[H      → Move cursor to top-left (home)
+	//\x1b[?25l   → Hide cursor
+	//\x1b[?25h   → Show cursor
+	//\x1b[<row>;<col>H  → Move cursor to specific position
+
 	// we create a slice that stores 1 byte
 	buf := make([]byte, 3)
 	for {
-		buf = make([]byte, 3)
 		// we read the byte sotred in the slice
 		n, err := os.Stdin.Read(buf)
 		if err != nil || n == 0 {
