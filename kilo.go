@@ -20,6 +20,16 @@ func main() {
 	oldTerminalState := enableRawMode()
 	defer term.Restore(int(os.Stdin.Fd()), oldTerminalState)
 
+	// getting window size
+
+	width, height, err := term.GetSize(int(os.Stdin.Fd()))
+	if err != nil {
+		panic(err)
+	}
+
+	// to avoid golang scremaing
+	fmt.Printf("Terminal size : %d cols x %d rows \r\n ", width, height)
+
 	// sending instruction to terminal to clear the entire screen
 	os.Stdout.WriteString("\x1b[2J")
 	os.Stdout.WriteString("\x1b[H")
@@ -68,7 +78,7 @@ func main() {
 			if buf[0] < 32 || buf[0] == 127 {
 				fmt.Printf("%d\r\n", buf[0])
 			} else {
-				fmt.Printf("%d ('%c')\r\n", buf[0], buf[0])
+				fmt.Printf("%c ('%d')\r\n", buf[0], buf[0])
 			}
 		}
 	}
